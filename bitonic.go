@@ -10,7 +10,7 @@ func main() {
   fmt.Println(s)
 }
 
-func separator(s []int, donw bool) []int {
+func separator(s []int, down bool) []int {
   if len(s) == 1 {
     return s
   } else {
