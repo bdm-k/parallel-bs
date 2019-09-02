@@ -42,15 +42,15 @@ func TestSeparator(t *testing.T) {
 
 	ds := separator(s, true)
 	if check(ds, true) {
-		t.Log("\nSorted down successfully")
+		t.Log("\nsorted down successfully")
 	} else {
-		t.Fatalf("\nSorting up failed\noriginal\n%v\nsorted\n%v", s, ds)
+		t.Fatalf("\nsorting up failed\noriginal\n%v\nsorted\n%v", s, ds)
 	}
 
 	us := separator(s, false)
 	if check(us, false) {
-		t.Log("\nSorted up successfully")
+		t.Log("\nsorted up successfully")
 	} else {
-		t.Fatalf("Sorting down failed\noriginal\n%v\nsorted\n%v", s, us)
+		t.Fatalf("sorting down failed\noriginal\n%v\nsorted\n%v", s, us)
 	}
 }
