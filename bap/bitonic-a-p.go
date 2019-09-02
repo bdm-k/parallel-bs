@@ -1,37 +1,4 @@
-package main
-
-import (
-	"bufio"
-	"fmt"
-	"log"
-	"os"
-	"strconv"
-)
-
-func main() {
-	f, err := os.Open("test/1.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
-
-	s := make([]int, 0, 100)
-	sc := bufio.NewScanner(f)
-	for sc.Scan() {
-		a, _ := strconv.Atoi(sc.Text())
-		s = append(s, a)
-	}
-	if err = sc.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	ch := make(chan []int)
-	go func() {
-		defer close(ch)
-		ch <- separator(s, true)
-	}()
-	fmt.Print(<-ch)
-}
+package bap
 
 func pow2(l int) int {
 	i := 2
