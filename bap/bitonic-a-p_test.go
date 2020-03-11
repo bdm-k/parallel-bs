@@ -1,3 +1,5 @@
+//TODO: create function, TestSpeed
+
 package bap
 
 import (
@@ -6,14 +8,14 @@ import (
 	"time"
 )
 
-func makeIntSlice() (s []int){
+func makeIntSlice() (s []int) {
 	rand.Seed(time.Now().UnixNano())
 	length := 0
 	for length == 0 {
 		length = rand.Intn(10000)
 	}
 	s = rand.Perm(length)
-  return
+	return
 }
 
 func check(s []int, down bool) (r bool) {
@@ -30,27 +32,39 @@ func check(s []int, down bool) (r bool) {
 	return
 }
 
-func TestMain(m *testing.M) {
+func TestAccuracy(t *testing.T) {
 	for i := 0; i < 10; i++ {
-		m.Run()
+		s := makeIntSlice()
+		t.Log("length of sequence : ", len(s))
+
+		ds := separator(s, true)
+		if check(ds, true) {
+			t.Log("\nsorted down successfully")
+		} else {
+			t.Fatal("\nsorting down failed")
+		}
+
+		us := separator(s, false)
+		if check(us, false) {
+			t.Log("\nsorted up successfully")
+		} else {
+			t.Fatal("\nsorting up failed")
+		}
 	}
 }
 
-func TestSeparator(t *testing.T) {
-	s := makeIntSlice()
-	t.Log("length of sequence : ", len(s))
-
-	ds := separator(s, true)
-	if check(ds, true) {
-		t.Log("\nsorted down successfully")
-	} else {
-		t.Fatalf("\nsorting up failed\noriginal\n%v\nsorted\n%v", s, ds)
+func TestSpeed(t *testing.T) {
+	s := func() []int {
+		rand.Seed(621)
+		return rand.Perm(10000)
+	}()
+	var bs, us []int
+	beforeloop := time.Now()
+	for i := 0; i < 100; i++ {
+		bs = separator(s, true)
+		us = separator(s, false)
 	}
-
-	us := separator(s, false)
-	if check(us, false) {
-		t.Log("\nsorted up successfully")
-	} else {
-		t.Fatalf("sorting down failed\noriginal\n%v\nsorted\n%v", s, us)
-	}
+	afterloop := time.Now()
+	_, _ = bs, us
+	t.Logf("\ntime: %v", afterloop.Sub(beforeloop))
 }
