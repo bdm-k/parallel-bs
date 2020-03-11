@@ -41,32 +41,31 @@ func separator(s []int, down bool) []int {
 func merger(s []int, down bool) []int {
 	if len(s) == 1 {
 		return s
-	} else {
-		comparer(s, down)
-		a := pow2(len(s))
-		chf := make(chan []int)
-		chs := make(chan []int)
-		if down {
-			go func() {
-				defer close(chf)
-				chf <- merger(s[:a], down)
-			}()
-			go func() {
-				defer close(chs)
-				chs <- merger(s[a:], down)
-			}()
-		} else {
-			go func() {
-				defer close(chf)
-				chf <- merger(s[:len(s)-a], down)
-			}()
-			go func() {
-				defer close(chs)
-				chs <- merger(s[len(s)-a:], down)
-			}()
-		}
-		return append(<-chf, <-chs...)
 	}
+	comparer(s, down)
+	a := pow2(len(s))
+	chf := make(chan []int)
+	chs := make(chan []int)
+	if down {
+		go func() {
+			defer close(chf)
+			chf <- merger(s[:a], down)
+		}()
+		go func() {
+			defer close(chs)
+			chs <- merger(s[a:], down)
+		}()
+	} else {
+		go func() {
+			defer close(chf)
+			chf <- merger(s[:len(s)-a], down)
+		}()
+		go func() {
+			defer close(chs)
+			chs <- merger(s[len(s)-a:], down)
+		}()
+	}
+	return append(<-chf, <-chs...)
 }
 
 func comparer(s []int, down bool) {
